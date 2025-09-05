@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `room` ADD COLUMN `image` VARCHAR(191) NULL,
+    MODIFY `price` INTEGER NOT NULL;

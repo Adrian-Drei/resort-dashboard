@@ -1,0 +1,40 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Resort {
+  id       Int      @id @default(autoincrement())
+  name     String
+  location String
+  rooms    Room[]
+}
+
+model Room {
+  id       Int     @id @default(autoincrement())
+  name     String
+  price    Int
+  image    String?  
+  resort   Resort  @relation(fields: [resortId], references: [id])
+  resortId Int
+  bookings Booking[]
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  guestName String
+  startDate DateTime
+  endDate   DateTime
+  roomId    Int
+  room      Room     @relation(fields: [roomId], references: [id])
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
