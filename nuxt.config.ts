@@ -5,9 +5,24 @@ export default defineNuxtConfig({
 
   vite: {
     ssr: {
-      external: ['@prisma/client']
-    }
-  },  
-  
+      external: ["@prisma/client"],
+    },
+    resolve: {
+      alias: {
+        ".prisma/client/index-browser":
+          "./node_modules/.prisma/client/index-browser.js",
+      },
+    },
+  },
+  nitro: {
+    externals: {
+      inline: ["@prisma/client"],
+    },
+    esbuild: {
+      options: {
+        target: "es2022",
+      },
+    },
+  },
   modules: ["@nuxtjs/tailwindcss", "@prisma/nuxt"],
 });
