@@ -5,8 +5,8 @@ const route = useRoute();
 const roomId = Number(route.params.id);
 const { data: resorts } = await useFetch("/api/resorts");
 const room = resorts.value
-  ?.flatMap((r) => r.rooms)
-  .find((r) => r.id === roomId);
+  ?.flatMap((r: any) => r.rooms)
+  .find((r: any) => r.id === roomId);
 
 const guestName = ref("");
 const startDate = ref("");
