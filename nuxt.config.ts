@@ -2,27 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-
-  vite: {
-    ssr: {
-      external: ["@prisma/client"],
-    },
-    resolve: {
-      alias: {
-        ".prisma/client/index-browser":
-          "./node_modules/.prisma/client/index-browser.js",
-      },
-    },
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/icon",
+    "@nuxt/image",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/supabase",
+  ],
+  supabase: {
+    redirect: false,
   },
-  nitro: {
-    externals: {
-      inline: ["@prisma/client"],
-    },
-    esbuild: {
-      options: {
-        target: "es2022",
-      },
-    },
-  },
-  modules: ["@nuxtjs/tailwindcss", "@prisma/nuxt"],
 });
