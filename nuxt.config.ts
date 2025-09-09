@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/supabase",
+    "nuxt-charts",
   ],
   supabase: {
     redirect: false,
