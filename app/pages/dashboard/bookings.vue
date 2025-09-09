@@ -38,47 +38,50 @@ const updateStatus = async (id: string, status: string) => {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">📅 Manage Bookings</h1>
+  <div class="flex w-full">
+    <DashboardSidebar />
+    <div class="flex-1 p-6">
+      <h1 class="text-2xl font-bold mb-4">📅 Manage Bookings</h1>
 
-    <table class="w-full border text-sm">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="p-2 border">Guest</th>
-          <th class="p-2 border">Resort</th>
-          <th class="p-2 border">Room</th>
-          <th class="p-2 border">Dates</th>
-          <th class="p-2 border">Status</th>
-          <th class="p-2 border">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="b in bookings" :key="b.id">
-          <td class="p-2 border">
-            {{ b.full_name }}
-            <br />
-            <small>{{ b.email }} / {{ b.phone }}</small>
-          </td>
-          <td class="p-2 border">{{ b.room.resort.name }}</td>
-          <td class="p-2 border">{{ b.room.room_type.name }}</td>
-          <td class="p-2 border">{{ b.start_date }} → {{ b.end_date }}</td>
-          <td class="p-2 border">{{ b.status }}</td>
-          <td class="p-2 border">
-            <button
-              class="bg-green-500 text-white px-2 py-1 rounded text-xs mr-1"
-              @click="updateStatus(b.id, 'confirmed')"
-            >
-              Confirm
-            </button>
-            <button
-              class="bg-red-500 text-white px-2 py-1 rounded text-xs"
-              @click="updateStatus(b.id, 'cancelled')"
-            >
-              Cancel
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="w-full border text-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2 border">Guest</th>
+            <th class="p-2 border">Resort</th>
+            <th class="p-2 border">Room</th>
+            <th class="p-2 border">Dates</th>
+            <th class="p-2 border">Status</th>
+            <th class="p-2 border">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="b in bookings" :key="b.id">
+            <td class="p-2 border">
+              {{ b.full_name }}
+              <br />
+              <small>{{ b.email }} / {{ b.phone }}</small>
+            </td>
+            <td class="p-2 border">{{ b.room.resort.name }}</td>
+            <td class="p-2 border">{{ b.room.room_type.name }}</td>
+            <td class="p-2 border">{{ b.start_date }} → {{ b.end_date }}</td>
+            <td class="p-2 border">{{ b.status }}</td>
+            <td class="p-2 border">
+              <button
+                class="bg-green-500 text-white px-2 py-1 rounded text-xs mr-1"
+                @click="updateStatus(b.id, 'confirmed')"
+              >
+                Confirm
+              </button>
+              <button
+                class="bg-red-500 text-white px-2 py-1 rounded text-xs"
+                @click="updateStatus(b.id, 'cancelled')"
+              >
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>

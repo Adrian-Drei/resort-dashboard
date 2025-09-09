@@ -10,6 +10,15 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "nuxt-charts",
   ],
+  imports: {
+    dirs: [
+      "constants",
+      "./constants/*.ts",
+      "./constants/**/*.ts",
+      "./types/*.ts",
+      "./utils/*.ts",
+    ],
+  },
   supabase: {
     redirect: false,
   },

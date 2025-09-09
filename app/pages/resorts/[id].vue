@@ -25,20 +25,40 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="resort">
-    <h1 class="text-2xl font-bold mb-2">{{ resort.name }}</h1>
-    <p class="text-sm text-gray-600">{{ resort.location }}</p>
-    <p class="mb-4">{{ resort.description }}</p>
+  <div v-if="resort" class="max-w-5xl mx-auto px-4 py-8">
+    <!-- Resort Info -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+        {{ resort.name }}
+      </h1>
+      <p class="text-sm text-gray-500 mb-2">{{ resort.location }}</p>
+      <p class="text-gray-700">{{ resort.description }}</p>
+    </div>
 
-    <h2 class="text-xl font-semibold mb-3">Rooms</h2>
-    <ul class="space-y-3">
-      <li v-for="room in rooms" :key="room.id" class="border p-3 rounded">
-        <p class="font-medium">Room {{ room.number }}</p>
-        <p class="text-sm text-gray-600">{{ room.room_types.name }} - ₱{{ room.room_types.price }}</p>
-        <NuxtLink :to="`/rooms/${room.id}`" class="text-blue-600 underline mt-2 inline-block">
-          Book this Room
+    <!-- Rooms -->
+    <h2 class="text-2xl font-semibold mb-4">Rooms</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <li
+        v-for="room in rooms"
+        :key="room.id"
+        class="list-none bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col justify-between"
+      >
+        <div>
+          <p class="text-lg font-medium text-gray-800">
+            Room {{ room.number }}
+          </p>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ room.room_types.name }} - ₱{{ room.room_types.price }}
+          </p>
+        </div>
+
+        <NuxtLink
+          :to="`/rooms/${room.id}`"
+          class="mt-4 text-blue-600 font-medium hover:text-blue-800 inline-block"
+        >
+          Book this Room →
         </NuxtLink>
       </li>
-    </ul>
+    </div>
   </div>
 </template>

@@ -13,6 +13,7 @@ const fullName = ref("");
 const email = ref("");
 const phone = ref("");
 const message = ref("");
+const messageType = ref<"error" | "success" | "info">("info");
 
 // Load room details
 onMounted(async () => {
@@ -34,6 +35,7 @@ const bookRoom = async () => {
     !phone.value
   ) {
     message.value = "⚠️ Please fill out all fields.";
+    messageType.value = "error";
     return;
   }
 
@@ -61,8 +63,10 @@ const bookRoom = async () => {
 
   if (error) {
     message.value = "Booking failed: " + error.message;
+    messageType.value = "error";
   } else {
     message.value = "✅ Booking successful! We’ll contact you soon.";
+    messageType.value = "success";
     startDate.value = "";
     endDate.value = "";
     fullName.value = "";
@@ -73,46 +77,85 @@ const bookRoom = async () => {
 </script>
 
 <template>
-  <div v-if="room" class="max-w-lg mx-auto">
-    <h1 class="text-2xl font-bold mb-2">Room {{ room.number }}</h1>
-    <p class="mb-2">
-      {{ room.room_types.name }} - ₱{{ room.room_types.price }}
-    </p>
-    <p class="mb-4 text-gray-700">{{ room.room_types.description }}</p>
+  <div
+    v-if="room"
+    class="max-w-lg mx-auto bg-white rounded-xl shadow-md p-6 mt-8"
+  >
+    <!-- Room Info -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-1">
+        Room {{ room.number }}
+      </h1>
+      <p class="text-gray-700 mb-1">
+        {{ room.room_types.name }} - ₱{{ room.room_types.price }}
+      </p>
+      <p class="text-gray-600">{{ room.room_types.description }}</p>
+    </div>
 
-    <div class="space-y-3">
+    <!-- Booking Form -->
+    <div class="space-y-4">
       <label class="block">
-        Full Name:
-        <input type="text" v-model="fullName" class="border px-2 py-1 w-full" />
+        <span class="text-gray-700 font-medium">Full Name</span>
+        <input
+          type="text"
+          v-model="fullName"
+          class="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
       </label>
+
       <label class="block">
-        Email:
-        <input type="email" v-model="email" class="border px-2 py-1 w-full" />
+        <span class="text-gray-700 font-medium">Email</span>
+        <input
+          type="email"
+          v-model="email"
+          class="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
       </label>
+
       <label class="block">
-        Phone:
-        <input type="text" v-model="phone" class="border px-2 py-1 w-full" />
+        <span class="text-gray-700 font-medium">Phone</span>
+        <input
+          type="text"
+          v-model="phone"
+          class="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
       </label>
+
       <label class="block">
-        Start Date:
+        <span class="text-gray-700 font-medium">Start Date</span>
         <input
           type="date"
           v-model="startDate"
-          class="border px-2 py-1 w-full"
+          class="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </label>
+
       <label class="block">
-        End Date:
-        <input type="date" v-model="endDate" class="border px-2 py-1 w-full" />
+        <span class="text-gray-700 font-medium">End Date</span>
+        <input
+          type="date"
+          v-model="endDate"
+          class="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
       </label>
+
       <button
         @click="bookRoom"
-        class="bg-blue-500 text-white px-4 py-2 rounded w-full"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition-colors duration-200"
       >
         Book this Room
       </button>
     </div>
 
-    <p v-if="message" class="mt-3 text-green-600">{{ message }}</p>
+    <!-- Message -->
+    <p
+      v-if="message"
+      :class="[
+        'mt-4 text-center font-medium',
+        messageType === 'success' ? 'text-green-600' : 'text-red-600',
+      ]"
+    >
+      {{ message }}
+    </p>
   </div>
 </template>

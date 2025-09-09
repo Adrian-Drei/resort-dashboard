@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import DashboardSidebar from "~/components/DashboardSidebar.vue";
+
 definePageMeta({ layout: "default" });
 
 const client = useSupabaseClient();
@@ -104,53 +106,56 @@ const xFormatter = (i: number) => chartData.value[i]?.month || "";
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">📊 Dashboard Overview</h1>
+  <div class="flex w-full">
+    <DashboardSidebar />
+    <div class="flex-1 p-6">
+      <h1 class="text-2xl font-bold mb-4">📊 Dashboard Overview</h1>
 
-    <div class="grid grid-cols-2 gap-4 mb-6">
-      <div class="p-4 bg-white shadow rounded">
-        <h2 class="text-lg font-semibold">Total Bookings</h2>
-        <p class="text-3xl">{{ totalBookings }}</p>
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="p-4 bg-white shadow rounded">
+          <h2 class="text-lg font-semibold">Total Bookings</h2>
+          <p class="text-3xl">{{ totalBookings }}</p>
+        </div>
+        <div class="p-4 bg-white shadow rounded">
+          <h2 class="text-lg font-semibold">Total Resorts</h2>
+          <p class="text-3xl">{{ totalResorts }}</p>
+        </div>
       </div>
-      <div class="p-4 bg-white shadow rounded">
-        <h2 class="text-lg font-semibold">Total Resorts</h2>
-        <p class="text-3xl">{{ totalResorts }}</p>
+
+      <h2 class="text-xl font-semibold mb-2">Recent Bookings</h2>
+      <ul class="divide-y border rounded mb-6">
+        <li v-for="b in bookings.slice(-5)" :key="b.id" class="p-3 text-sm">
+          {{ b.full_name }} booked
+          <strong>{{ b.room?.room_type?.name }}</strong>
+          at
+          <em>{{ b.room?.resort?.name }}</em>
+          ({{ b.start_date }} → {{ b.end_date }})
+        </li>
+      </ul>
+
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Bookings Chart</h2>
+        <select
+          v-model="chartPeriod"
+          class="px-3 py-1 border rounded shadow-sm focus:ring focus:ring-blue-300 bg-white text-gray-800"
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
       </div>
-    </div>
 
-    <h2 class="text-xl font-semibold mb-2">Recent Bookings</h2>
-    <ul class="divide-y border rounded mb-6">
-      <li v-for="b in bookings.slice(-5)" :key="b.id" class="p-3 text-sm">
-        {{ b.full_name }} booked
-        <strong>{{ b.room?.room_type?.name }}</strong>
-        at
-        <em>{{ b.room?.resort?.name }}</em>
-        ({{ b.start_date }} → {{ b.end_date }})
-      </li>
-    </ul>
-
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-semibold">Bookings Chart</h2>
-      <select
-        v-model="chartPeriod"
-        class="px-3 py-1 border rounded shadow-sm focus:ring focus:ring-blue-300 bg-white text-gray-800"
-      >
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-      </select>
-    </div>
-
-    <div class="bg-white p-4 shadow rounded">
-      <LineChart
-        :data="chartData"
-        :categories="categories"
-        :height="300"
-        :width="800"
-        :x-formatter="xFormatter"
-        x-label="Period"
-        y-label="Bookings"
-      />
+      <div class="bg-white p-4 shadow rounded">
+        <LineChart
+          :data="chartData"
+          :categories="categories"
+          :height="300"
+          :width="800"
+          :x-formatter="xFormatter"
+          x-label="Period"
+          y-label="Bookings"
+        />
+      </div>
     </div>
   </div>
 </template>
